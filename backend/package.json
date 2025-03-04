@@ -21,8 +21,13 @@
   "homepage": "https://github.com/Code-A-187/task-manager---March-2025#readme",
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/mongoose": "^5.11.96",
     "express": "^4.21.2",
     "tsc-watch": "^6.2.1",
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mongoose": "^8.12.0"
   }
 }
