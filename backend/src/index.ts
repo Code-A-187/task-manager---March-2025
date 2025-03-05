@@ -1,7 +1,7 @@
 import express, { json, Request, Response } from 'express';
 import { connectDB } from './db';
 import User from './user.model';
-
+import bcrypt from 'bcrypt';
 
 const app = express();
 const port = 3000;
@@ -18,7 +18,8 @@ connectDB().then(() => {
     app.post('/register', async (req: Request, res: Response) => {
         try {
             const{ email, password } = req.body
-            const user = new User({email, password})
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const user = new User({email, password: hashedPassword})
             await user.save()
             res.status(201).json({ message: 'User registered successfully' });        
         } catch (error) {
