@@ -3,6 +3,7 @@ import { connectDB } from './db';
 import User from './user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { authenticateToken, AuthenticatedRequest } from './auth.middleware';
 
 const app = express();
 const port = 3000;
@@ -53,6 +54,11 @@ connectDB().then(() => {
             res.status(500).json({ message: 'Could not Log in' })
         }
     });
+
+    app.get('/protected', authenticateToken, (req: Request, res: Response) => {
+        const userId = (req as AuthenticatedRequest).userId
+        res.json({ message: 'Protected route accessed', userId })
+    })
    
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
