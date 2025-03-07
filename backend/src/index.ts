@@ -4,6 +4,7 @@ import User from './user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { authenticateToken, AuthenticatedRequest } from './auth.middleware';
+import Task from './task.model';
 
 const app = express();
 const port = 3000;
@@ -55,9 +56,20 @@ connectDB().then(() => {
         }
     });
 
-    app.get('/protected', authenticateToken, (req: Request, res: Response) => {
-        const userId = (req as AuthenticatedRequest).userId
-        res.json({ message: 'Protected route accessed', userId })
+    app.post('/tasks', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const task = new Task ({ ...req.body, userId: req.userId })
+            await task.save()
+            res.status(201).json(task)
+        } catch (error) {
+            console.error("Task Creation Error:", error)
+            res.status(500).json({ message: 'Could not create task' })
+        }   
+    })
+
+    app.get('/protected', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+        const userId = req.userId;
+        res.json({ message: 'Protected route accessed', userId });
     })
    
     app.listen(port, () => {
