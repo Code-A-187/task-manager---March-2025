@@ -4,10 +4,10 @@ import jwt from 'jsonwebtoken'
 const JWT_SECRET = "very-secret-key"
 
 export interface AuthenticatedRequest extends Request {
-    userId: string;
+    userId?: string;
 }
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
@@ -22,7 +22,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
             return;
         }
 
-        (req as AuthenticatedRequest).userId = decoded.userId
+        req.userId = decoded.userId
 
         next();
     });
