@@ -77,6 +77,21 @@ connectDB().then(() => {
         }
     });
 
+    app.get('/tasks/:id', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const task = await Task.findOne({ _id: req.params.id, userId: req.userId });
+            if (!task) {
+                res.status(404).json({ message: 'Task not found'});
+                return;
+            }
+            res.json(task);
+        } catch (error) {
+            console.error('Get Task Error', error);
+            res.status(500).json({ message: 'Could not retrieve task'});
+            
+        }
+    });
+
     app.get('/protected', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
         const userId = req.userId;
         res.json({ message: 'Protected route accessed', userId });
