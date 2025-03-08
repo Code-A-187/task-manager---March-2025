@@ -58,19 +58,29 @@ connectDB().then(() => {
 
     app.post('/tasks', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
         try {
-            const task = new Task ({ ...req.body, userId: req.userId })
-            await task.save()
-            res.status(201).json(task)
+            const task = new Task ({ ...req.body, userId: req.userId });
+            await task.save();
+            res.status(201).json(task);
         } catch (error) {
-            console.error("Task Creation Error:", error)
-            res.status(500).json({ message: 'Could not create task' })
+            console.error("Task Creation Error:", error);
+            res.status(500).json({ message: 'Could not create task' });
         }   
-    })
+    });
+
+    app.get('/tasks', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const tasks = await Task.find({ userId: req.userId });
+            res.json(tasks);
+        } catch (error) {
+            console.error('Get Tasks Error', error);
+            res.status(500).json({ message: 'Could not retrieve tasks' });
+        }
+    });
 
     app.get('/protected', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
         const userId = req.userId;
         res.json({ message: 'Protected route accessed', userId });
-    })
+    });
    
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
