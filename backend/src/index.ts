@@ -105,8 +105,22 @@ connectDB().then(() => {
             }
             res.json(task);
         } catch (error) {
-            console.error('Update Task Error', error)
-            res.status(500).json({ message: 'Task could not be updated'})
+            console.error('Update Task Error', error);
+            res.status(500).json({ message: 'Could not update task'});
+        }
+    });
+
+    app.delete('/tasks/:id', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const task = await Task.findOneAndDelete({ _id: req.params.id, userId: req.userId})
+            if (!task) {
+                res.status(404).json({ message: 'Task not found'});
+                return;
+            }
+            res.sendStatus(204); // No content
+        } catch (error) {
+            console.error('Delete Task Error', error)
+            res.status(500).json({ message: 'Could not delete task'})
         }
     });
 
