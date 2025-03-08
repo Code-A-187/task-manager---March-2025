@@ -92,6 +92,24 @@ connectDB().then(() => {
         }
     });
 
+    app.put('/tasks/:id', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const task = await Task.findOneAndUpdate(
+                {_id: req.params.id, userId: req.userId},
+                req.body,
+                {new: true}
+            );
+            if (!task) {
+                res.status(404).json({ message: 'Task not found'});
+                return;
+            }
+            res.json(task);
+        } catch (error) {
+            console.error('Update Task Error', error)
+            res.status(500).json({ message: 'Task could not be updated'})
+        }
+    });
+
     app.get('/protected', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
         const userId = req.userId;
         res.json({ message: 'Protected route accessed', userId });
