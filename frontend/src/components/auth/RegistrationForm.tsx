@@ -3,11 +3,10 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-function LoginForm() {
+function RegistrationForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    return (
+    return(
         <form>
             <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -15,12 +14,11 @@ function LoginForm() {
             </div>
             <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
             </div>
-            <Button className="mt-4" type="submit">Login</Button>
+            <Button className="mt-4" type="submit">Register</Button>
         </form>
     );
-
 }
 
-export default LoginForm;
+export default RegistrationForm;
