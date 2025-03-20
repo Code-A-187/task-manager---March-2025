@@ -1,20 +1,22 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { Button } from "@/components/ui/button"
+import LoginForm from './components/auth/LoginForm'
+import ProtectedRoute from './components/ProtectedRoute'
+import RegistrationForm from './components/auth/RegistrationForm'
 
 
 
 function App() {
 
   return (
-    <>
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/login' element={ <LoginForm/>} />
+        <Route path='/register' element= { <RegistrationForm/> } />
+        <Route element={ <ProtectedRoute/>}>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
