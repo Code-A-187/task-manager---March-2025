@@ -11,6 +11,8 @@ function LoginForm() {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const validateForm = () => {
         let isValid = true
 
@@ -41,10 +43,12 @@ function LoginForm() {
         e.preventDefault();
         if (validateForm()) {
             try {
-                const data = await login(email, password)
-                console.log("Login Seccessful:", data)
+                const data = await login(email, password);
+                setIsLoading(false);
+                console.log("Login Seccessful:", data);
             } catch (error) {
-                console.log("Login error:", error)
+                setIsLoading(false);
+                console.log("Login error:", error);
             }
         }
     }
