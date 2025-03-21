@@ -44,3 +44,18 @@ export const register = async(email:string, password: string) => {
     }
     
 };
+
+export const getTasks = async () => {
+    const response = await fetch(`${API_BASE_URL}/tasks`, {
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch tasks');
+    }
+
+    return response.json();
+
+};
