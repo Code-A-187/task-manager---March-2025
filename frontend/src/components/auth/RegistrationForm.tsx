@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { login } from "@/services/api"
+import { register } from "@/services/api"
+
 
 function RegistrationForm() {
     const [email, setEmail] = useState('');
@@ -42,12 +43,13 @@ function RegistrationForm() {
     const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
             if (validateForm()) {
+                setIsLoading(true)
                 try {
-                    const data = await login(email, password);
+                    const data = await register(email, password);
                     setIsLoading(false);
-                    console.log("Login Seccessful:", data);
+                    console.log("Register Seccessful:", data);
                 } catch (error) {
-                    console.log("Login error:", error);
+                    console.log("Register error:", error);
                     setIsLoading(false);
                 }
             }
@@ -64,7 +66,9 @@ function RegistrationForm() {
                 <Input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 { passwordError && <p className="text-red-500">{ passwordError }</p>}
             </div>
-            <Button className="mt-4" type="submit">Register</Button>
+            <Button className="mt-4" type="submit" disabled={isLoading}>
+                {isLoading ? 'Loading...' : 'Register'}
+            </Button>
         </form>
     );
 }

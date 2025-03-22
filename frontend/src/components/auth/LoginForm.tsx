@@ -7,10 +7,8 @@ import { login } from "@/services/api"
 function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
     const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = () => {
@@ -42,6 +40,7 @@ function LoginForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
+            setIsLoading(true)
             try {
                 const data = await login(email, password);
                 setIsLoading(false);
@@ -50,6 +49,8 @@ function LoginForm() {
                 setIsLoading(false);
                 console.log("Login error:", error);
             }
+        } else {
+            console.log("Form is invalid");
         }
     }
 
@@ -63,9 +64,11 @@ function LoginForm() {
             <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                { password && <p className = "text-red-500">{ passwordError }</p>}
+                { passwordError && <p className = "text-red-500">{ passwordError }</p>}
             </div>
-            <Button className="mt-4" type="submit">Login</Button>
+            <Button className="mt-4" type="submit" disabled={isLoading}>
+                {isLoading ? "Loading..." : "Login"}
+            </Button>
         </form>
     );
 

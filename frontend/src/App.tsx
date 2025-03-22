@@ -16,7 +16,7 @@ function App() {
         <Route path='/register' element= { <RegistrationForm/> } />
         <Route path='/tasks' element= { <TaskList/> } />
         <Route element={ <ProtectedRoute/>}>
-        <Route path='/tasks' element= { <TaskList/> } />
+        
         </Route>
       </Routes>
     </BrowserRouter>

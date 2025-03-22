@@ -12,6 +12,7 @@ export const login = async(email: string, password: string) => {
     
         if (!response.ok) {
             const errorData  = await response.json();
+            console.error('API Error:', response.status, errorData);
             throw new Error(errorData.message || 'Login failed');
         }
         
@@ -24,7 +25,7 @@ export const login = async(email: string, password: string) => {
     
 };
 
-export const register = async(email:string, password: string) => {
+export const register = async(email: string, password: string) => {
     try{
         const response = await fetch(`${API_BASE_URL}/register`, {
             method: 'POST',
