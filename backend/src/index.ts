@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors'
 import { connectDB } from './db';
 import User from './user.model';
 import bcrypt from 'bcrypt';
@@ -7,6 +8,7 @@ import { authenticateToken, AuthenticatedRequest } from './auth.middleware';
 import Task from './task.model';
 
 const app = express();
+app.use(cors());
 const port = 3000;
 const JWT_SECRET: string = "very-secret-key"
 
